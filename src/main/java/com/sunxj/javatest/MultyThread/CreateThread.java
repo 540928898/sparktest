@@ -61,49 +61,47 @@ public static String changeType(String element){
     return element + "tt";
 }
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        System.out.println("继承Thread的实现方式");
-//        CreateRawThread rawThread = new CreateRawThread();
-//        rawThread.start();
-//
-//        System.out.println("实现Runnable接口的实现方式");
-//        CreateRunnableThread th2 = new CreateRunnableThread();
-//        Thread th = new Thread(th2);
-//        th.start();
+        System.out.println("继承Thread的实现方式");
+        CreateRawThread rawThread = new CreateRawThread();
+        rawThread.start();
+
+        System.out.println("实现Runnable接口的实现方式");
+        CreateRunnableThread th2 = new CreateRunnableThread();
+        Thread th = new Thread(th2);
+        th.start();
 
         System.out.println("使用Callable，Futuretask 实现线程的创建，并获取线程返回值");
         CreateCallableThread my1 = new CreateCallableThread();
-//        CreateCallableThread my2 = new CreateCallableThread();
-//        CreateCallableThread my3 = new CreateCallableThread();
-//        CreateCallableThread my4 = new CreateCallableThread();
-
         FutureTask<String> task1 = new FutureTask<String>(my1);
-//        FutureTask<String> task2 = new FutureTask<String>(my1);
-//        FutureTask<String> task3 = new FutureTask<String>(my1);
-//        FutureTask<String> task4 = new FutureTask<String>(my1);
-
-
 
         Thread thread1 = new Thread(task1);
-//        Thread thread2 = new Thread((task2));
-//        Thread thread3 = new Thread(task3);
-//        Thread thread4 = new Thread(task4);
         thread1.setName("gupengpeng");//设置进程名字
         thread1.start();
-//        thread2.start();
-//        thread3.start();
-//        thread4.start();
-        System.out.println(task1.get());
-//        List features = Arrays.asList("Lambdas", "Default Method", "Stream API", "Date and Time API");
-//        features.forEach(n -> System.out.println(changeType((String) n)));
-//        System.out.println("使用Executor实现线程的创建");
-//        ExecutorService executorService = Executors.newFixedThreadPool(10);
-//        executorService.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("executor");
-//            }
-//        });
-//        executorService.shutdown();
-
+////        List features = Arrays.asList("Lambdas", "Default Method", "Stream API", "Date and Time API");
+////        features.forEach(n -> System.out.println(changeType((String) n)));
+        System.out.println("使用Executor实现线程的创建");
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("executor");
+            }
+        });
+        executorService.shutdown();
+//使用匿名内部类进行线程创建
+        System.out.println("使用匿名内部类");
+        new Thread(){
+            @Override
+           public void run(){
+                System.out.println("我是Thread的匿名内部类");
+            }
+        }.start();
+        System.out.println("使用Runnable 实现匿名内部类");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("This is Runnable");
+            }
+        }).start();
     }
 }
