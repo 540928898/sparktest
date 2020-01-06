@@ -1,11 +1,7 @@
 package com.sunxj.javatest.MultyThread;
 
 public class Threadlocal {
-    private static ThreadLocal<Integer> threadlocal1 = new ThreadLocal<Integer>(){
-        public Integer initialValue() {
-            return 0;
-        }
-    };
+    private static ThreadLocal<Integer> threadlocal1 = ThreadLocal.withInitial(() -> 0);
     public int getNextNum() {
         threadlocal1.set(threadlocal1.get() + 1);
         return threadlocal1.get();
