@@ -45,7 +45,6 @@ public class CreateThread extends Thread {
         }
     }
 
-
     /*
     使用Executor创建多线程，实际上是使用了线程池
      */
