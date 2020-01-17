@@ -16,7 +16,6 @@ class Solution:
             if matrix[temp][0] > target:
                 down = temp-1
             if matrix[temp][0] == target:
-                up = temp
                 return True
         row = up
         left = 0

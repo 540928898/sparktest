@@ -1,7 +1,6 @@
 package com.sunxj.javatest.MultyThread.Chapter05ThreadChat;
 
-import scala.Int;
-import sun.tools.jconsole.JConsole;
+
 
 import java.util.LinkedList;
 
