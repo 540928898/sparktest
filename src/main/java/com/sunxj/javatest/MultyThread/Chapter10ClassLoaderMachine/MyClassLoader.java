@@ -40,7 +40,6 @@ public class MyClassLoader extends ClassLoader {
 
     private byte[] readClassBytes(String name) throws ClassNotFoundException{
         String classPath = name.replace(".", "/");
-        System.out.println("classPath is :"+classPath);
         String[] names = name.split("\\.") ;
         System.out.println(classDir);
         Path classFullPath = classDir.resolve(Paths.get(classDir+"/"+names[names.length-1] + ".class"));

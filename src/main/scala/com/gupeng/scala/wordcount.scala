@@ -1,5 +1,4 @@
 package com.sunxj.sparktest
-
 import org.apache.spark.{SparkConf, SparkContext}
 object count {
   def word1(conf: SparkConf):Unit={
