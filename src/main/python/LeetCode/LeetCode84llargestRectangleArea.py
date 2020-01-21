@@ -16,6 +16,7 @@ class Solution:
             minindex = heights.index(minnum)
             return max(maxyou(heights[:minindex]),len(heights)*minnum,maxyou(heights[minindex+1:]))
         return maxyou(heights)
+    #使用栈
     def largestRectangleArea2(self,heights):
         stack = []
         heights = [0] + heights + [0]
