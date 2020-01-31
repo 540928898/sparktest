@@ -11,7 +11,7 @@ indexHeader = inorder.index(preorder[0])
 的时候可以缩小查询范围，加入left，right，缩小范围，可以加快查询速度
 使用字典，直接查找
 idx_map = {val:idx for idx, val in enumerate(inorder)} 
-
+具体参考106的后续和中序键树
 '''
 class Solution:
     ROOT = TreeNode(-1);
