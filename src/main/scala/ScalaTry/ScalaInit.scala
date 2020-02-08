@@ -9,14 +9,14 @@ object ScalaInit {
     rdd.map(Print1)
 
   }
-  def main(args: Array[String]): Unit = {
-
+//  def main(args: Array[String]): Unit = {
+//
     val conf = new SparkConf()
       .setAppName("first spark app(scala)")
-      .setMaster("local[1]");
+      .setMaster("local[1]")
     val sc = new SparkContext(conf)
-    val r1 = sc.parallelize(List(1,2,3,4,5))
-    r1.map(s=>(s._1,s._2)).foreach(println())
+//    val r1 = sc.parallelize(List(1,2,3,4,5))
+//    r1.map(s=>(s._1,s._2)).foreach(println())
 
 //    val path = "file:///Users/4paradigm/Desktop/"
 //    val lines = sc.textFile(path+"data.txt")
@@ -35,5 +35,5 @@ object ScalaInit {
 //    println(counter)
 
 
-  }
+//  }
 }

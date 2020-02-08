@@ -69,7 +69,6 @@ public class MapReduceSort extends Configured implements Tool {
         return 0;
 
     }
-
 }
 class Mymap extends Mapper<LongWritable, Text,Text, IntWritable> {
     private Text myKey = new Text();
