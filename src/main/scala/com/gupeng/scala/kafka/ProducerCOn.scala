@@ -1,6 +1,7 @@
-package com.gupeng.scala
+package com.gupeng.scala.kafka
+
 import java.util.{Properties, Random, UUID}
-import kafka.producer.{KeyedMessage, Producer, ProducerConfig}
+
 import org.codehaus.jettison.json.JSONObject
 
 object ProducerCOn {

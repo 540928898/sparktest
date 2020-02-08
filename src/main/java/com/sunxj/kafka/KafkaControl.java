@@ -20,7 +20,6 @@ public class KafkaControl extends ConnectKafka{
         properties.put("session.timeout.ms", "30000");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(Arrays.asList(TOPIC));
         while (true) {
@@ -32,6 +31,7 @@ public class KafkaControl extends ConnectKafka{
             }
         }
     }
+
     public static void runProducer() {
         Properties kafkaProps = new Properties();
         kafkaProps.put("bootstrap.servers", BROKER_LIST);

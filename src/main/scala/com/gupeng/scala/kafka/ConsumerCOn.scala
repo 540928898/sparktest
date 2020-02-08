@@ -1,19 +1,9 @@
-package com.gupeng.scala
+package com.gupeng.scala.kafka
+
 import java.util.{Collections, Properties}
 
-import kafka.serializer.StringDecoder
-//import net.sf.json.JSONObject
-import org.apache.hadoop.hbase.client.{HTable, Put}
-import org.apache.hadoop.hbase.util.Bytes
-import org.apache.hadoop.hbase.{HBaseConfiguration, TableName}
 import org.apache.kafka.clients.consumer.{ConsumerRecords, KafkaConsumer}
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.SparkConf
-import org.apache.spark.rdd.RDD
-import org.apache.spark.streaming.kafka.KafkaUtils
-import scala.collection.mutable.ListBuffer
-//import org.apache.spark.streaming.Seconds
-import scala.util.parsing.json.JSONObject
+
 object ConsumerCOn {
 
   def main(args: Array[String]): Unit = {
