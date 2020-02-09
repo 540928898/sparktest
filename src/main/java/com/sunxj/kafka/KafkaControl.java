@@ -1,14 +1,15 @@
 package com.sunxj.kafka;
-
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.PartitionInfo;
+import org.apache.kafka.common.TopicPartition;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
-
 public class KafkaControl extends ConnectKafka{
     public static void runConsumer(){
         Properties properties = new Properties();
@@ -21,12 +22,19 @@ public class KafkaControl extends ConnectKafka{
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList(TOPIC));
+        List<PartitionInfo> partitionInfoList = kafkaConsumer.partitionsFor(TOPIC);
+        if(null != partitionInfoList) {
+            for(PartitionInfo partitionInfo : partitionInfoList) {
+                kafkaConsumer.assign(Collections.singletonList(
+                        new TopicPartition(partitionInfo.topic(), partitionInfo.partition())));
+            }
+        }
+//        kafkaConsumer.subscribe(Arrays.asList(TOPIC));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(1000);
             for (ConsumerRecord<String, String> record : records) {
                 System.out.println("-----------------");
-                System.out.printf("offset = %d, value = %s", record.offset(), record.value());
+                System.out.printf("offset = %d, value = %s,patition = %s", record.offset(), record.value(),record.partition());
                 System.out.println("Consume Success");
             }
         }

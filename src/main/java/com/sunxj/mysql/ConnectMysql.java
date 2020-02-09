@@ -14,7 +14,6 @@ public class ConnectMysql {
     }
 
     static Connection mysqlConnect;
-
     static {
         try {
             mysqlConnect = DriverManager.getConnection(jdbcPath, name, password);
