@@ -1,9 +1,5 @@
 # Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from LeetCode.TreeProblem.TreeUtils import *
 '''
 这道题的重点在于如何节约时间
 也就是说我们在使用

@@ -22,20 +22,22 @@ public class KafkaControl extends ConnectKafka{
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
+        TopicPartition p = new TopicPartition(TOPIC,0);
         List<PartitionInfo> partitionInfoList = kafkaConsumer.partitionsFor(TOPIC);
-        if(null != partitionInfoList) {
-            for(PartitionInfo partitionInfo : partitionInfoList) {
-                kafkaConsumer.assign(Collections.singletonList(
-                        new TopicPartition(partitionInfo.topic(), partitionInfo.partition())));
-            }
-        }
+        kafkaConsumer.assign(Arrays.asList(p));
+//        if(null != partitionInfoList) {
+//            for(PartitionInfo partitionInfo : partitionInfoList) {
+//                kafkaConsumer.assign(Collections.singletonList(
+//                        new TopicPartition(partitionInfo.topic(), partitionInfo.partition())));
+//            }
+//        }
 //        kafkaConsumer.subscribe(Arrays.asList(TOPIC));
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(1000);
             for (ConsumerRecord<String, String> record : records) {
                 System.out.println("-----------------");
                 System.out.printf("offset = %d, value = %s,patition = %s", record.offset(), record.value(),record.partition());
-                System.out.println("Consume Success");
+//                System.out.println("Consume Success");
             }
         }
     }
@@ -43,10 +45,12 @@ public class KafkaControl extends ConnectKafka{
     public static void runProducer() {
         Properties kafkaProps = new Properties();
         kafkaProps.put("bootstrap.servers", BROKER_LIST);
+//        kafkaProps.put("zk.connect", "localhost:2181");
         kafkaProps.put("key.serializer",
                 "org.apache.kafka.common.serialization.StringSerializer");
         kafkaProps.put("value.serializer",
                 "org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProps.put("partitioner.class","com.sunxj.kafka.PartitionNew");
         KafkaProducer<String, String> producer = new KafkaProducer<String, String>(kafkaProps);
         int i = 0;
         while (true) {

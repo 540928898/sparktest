@@ -1,10 +1,5 @@
 # Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
+from LeetCode.TreeProblem.TreeUtils import *
 class Solution:
     def buildTree(self, inorder, postorder) :
         indexDic = {inorder[i]:i for i in range(len(postorder))}
