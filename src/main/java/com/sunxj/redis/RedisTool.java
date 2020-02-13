@@ -17,7 +17,6 @@ public class RedisTool {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
    public  void close(){
         jedis.close();

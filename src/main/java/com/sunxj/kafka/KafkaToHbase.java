@@ -1,9 +1,9 @@
 package com.sunxj.kafka;
+
+import com.sunxj.hase.hbaseConnect.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
@@ -12,10 +12,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-public class KafkaControl extends ConnectKafka{
-    public static void runConsumer() {
+import com.sunxj.hase.hbaseConnect;
+public class KafkaToHbase extends KafkaControl {
+    static hbaseConnect hb1 = new hbaseConnect();
+    public static void setHbaseControl() throws IOException {
+        hb1.setMyconnection();
+    }
+    public static void runConsumer()  {
+//        hb1.setMyconnection();
+//        System.out.println(hb1.isExist("emp"));
+
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", BROKER_LIST);//xxx鏄湇鍔″櫒闆嗙兢鐨刬p
+        properties.put("bootstrap.servers", BROKER_LIST);//xxx是服务器集群的ip
         properties.put("group.id", Group_ID);
         properties.put("enable.auto.commit", "true");
         properties.put("auto.commit.interval.ms", "1000");
@@ -26,7 +34,6 @@ public class KafkaControl extends ConnectKafka{
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
 //        TopicPartition p = new TopicPartition(TOPIC,0);
         List<PartitionInfo> partitionInfoList = kafkaConsumer.partitionsFor(TOPIC);
-//        kafkaConsumer.assign(Arrays.asList(p));
         if(null != partitionInfoList) {
             for(PartitionInfo partitionInfo : partitionInfoList) {
                 kafkaConsumer.assign(Collections.singletonList(
@@ -43,32 +50,11 @@ public class KafkaControl extends ConnectKafka{
             }
         }
     }
+    public static void main(String[] args) throws IOException {
 
-    public static void runProducer() {
-        Properties kafkaProps = new Properties();
-        kafkaProps.put("bootstrap.servers", BROKER_LIST);
-//        kafkaProps.put("zk.connect", "localhost:2181");
-        kafkaProps.put("key.serializer",
-                "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProps.put("value.serializer",
-                "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProps.put("partitioner.class","com.sunxj.kafka.PartitionNew");
-        KafkaProducer<String, String> producer = new KafkaProducer<String, String>(kafkaProps);
-        int i = 0;
-        while (true) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            i += 1;
-            producer.send(new ProducerRecord<String, String>(TOPIC, "" + i, "asd"));
-            System.out.println("produce success");
-        }
+        new Thread(KafkaControl::runProducer).start();
+//        System.out.println("Success");
+
     }
-    public static void main(String[] args) throws InterruptedException, IOException {
-       Thread t1 = new Thread(KafkaControl::runProducer) ;
-       t1.start();
-       new Thread(KafkaControl::runConsumer).start();
-    }
+
 }
