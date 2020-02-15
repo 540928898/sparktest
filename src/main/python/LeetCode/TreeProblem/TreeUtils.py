@@ -1,4 +1,7 @@
 # -- coding: gbk --
+import math
+
+
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -32,12 +35,28 @@ def createBSTree(ROOT,list1):
 def finfValue(ROOT,target):
     pass
 
-def printTree(root,order = "inorder"):
+def printTreeByRoot(root,order = "inorder"):
     if root :
-        printTree(root.left)
+        printTreeByRoot(root.left)
         print(root.val)
-        printTree(root.right)
+        printTreeByRoot(root.right)
 
+def printTreeByarray(array):
+    array = [0] + array
+    index = 1
+    depth = math.ceil(math.log(len(array), 2))
+    sep = ' '
+    for i in range(int(depth)):
+        offset = 2 ** i
+        print(sep * (2 ** (int(depth) - i - 1) - 1), end = ' ')
+        line = array[index:index+offset]
+        for j, x in enumerate(line):
+            print("{:>{}}".format(x, len(sep)), end = ' ')
+            interval = 0 if i == 0 else 2 ** (int(depth) - i) - 1
+            if j < len(line) - 1:
+                print(sep * interval, end = ' ')
+        index += offset
+        print()
 def in_order_digui(root):
     res = []
     if root:
@@ -66,7 +85,7 @@ def in_order_diedai(root):
 if __name__ == '__main__':
     ROOT = TreeNode(-float("inf"))
     createBSTree(ROOT,[1,2,3,4,-5])
-    printTree(ROOT)
+    printTreeByRoot(ROOT)
     print(in_order_diedai(ROOT))
     print(in_order_digui(ROOT))
 

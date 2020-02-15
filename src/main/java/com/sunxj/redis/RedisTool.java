@@ -8,7 +8,7 @@ import java.util.*;
 
 
 public class RedisTool {
-    private static Jedis jedis ;
+    public static Jedis jedis ;
     public  void setJedis(){
         try {
             jedis = new Jedis("127.0.0.1");
@@ -18,6 +18,7 @@ public class RedisTool {
             e.printStackTrace();
         }
     }
+
    public  void close(){
         jedis.close();
    }
