@@ -23,7 +23,7 @@ object ConsumerCOn {
     // 得到Consumer实例
     val kafkaConsumer = new KafkaConsumer[String, String](prop)
     // 首先需要订阅topic
-    kafkaConsumer.subscribe(Collections.singletonList("test1"))
+    kafkaConsumer.subscribe(Collections.singletonList("Three"))
     // 开始消费数据
     while (true) {
       // 如果Kafak中没有消息，会隔timeout这个值读一次。比如上面代码设置了2秒，也是就2秒后会查一次。

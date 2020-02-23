@@ -27,7 +27,7 @@ object ProducerCOn {
   }
 
   def main(args: Array[String]): Unit = {
-    val topic = "test1"
+    val topic = "Three"
     val brokers = "localhost:9092"
     val props = new Properties()
     props.put("metadata.broker.list", brokers)

@@ -77,6 +77,14 @@ public class RedisTool {
             System.out.println(ele);
         }
     }
+    void zsortGet(String zsName,int topn){
+        Set<String> t1 = jedis.zrevrange(zsName,0,4);
+        for (String name:t1
+             ) {
+            System.out.println(name);
+        }
+    }
+
 //    public void findList(String listName,in){
 
 //    }
@@ -85,30 +93,31 @@ public class RedisTool {
 
         RedisTool r1 = new RedisTool();
         try {
-
             r1.setJedis();
-            ArrayList<String> se = new ArrayList<String>();
-            HashSet<String> set1 = new HashSet<String>();
-            HashMap<String, String> hashMap = new HashMap<String, String>();
-            se.add("gupeng");
-            se.add("xiao");
-            hashMap.put("gupeng", "new1");
-            hashMap.put("tel", "13815690319");
-            set1.add("gupeng1");
-            set1.add("gupeng2");
-            set1.add("gupeng3");
-            System.out.println("setList测试");
-            r1.setList("gupengList", se);
-            System.out.println("setHasht测试");
-            r1.setHash("gupengInfo",hashMap);
-            System.out.println("setSet测试");
-            r1.setSet("gupengSet",(Set<String>)set1);
-            System.out.println("删除测试");
-            r1.getAllKeys();
-//            jedis.del("gupengSet:","gupeng1");
-            r1.getAllKeys();
-            jedis.set("gupengLock", "locklock","NX","PX",15);
-            jedis.hset("gupenghset", "gugu", "1");
+            r1.zsortGet("topPopularFilms",5);
+
+//            ArrayList<String> se = new ArrayList<String>();
+//            HashSet<String> set1 = new HashSet<String>();
+//            HashMap<String, String> hashMap = new HashMap<String, String>();
+//            se.add("gupeng");
+//            se.add("xiao");
+//            hashMap.put("gupeng", "new1");
+//            hashMap.put("tel", "13815690319");
+//            set1.add("gupeng1");
+//            set1.add("gupeng2");
+//            set1.add("gupeng3");
+//            System.out.println("setList测试");
+//            r1.setList("gupengList", se);
+//            System.out.println("setHasht测试");
+//            r1.setHash("gupengInfo",hashMap);
+//            System.out.println("setSet测试");
+//            r1.setSet("gupengSet",(Set<String>)set1);
+//            System.out.println("删除测试");
+//            r1.getAllKeys();
+////            jedis.del("gupengSet:","gupeng1");
+//            r1.getAllKeys();
+//            jedis.set("gupengLock", "locklock","NX","PX",15);
+//            jedis.hset("gupenghset", "gugu", "1");
 
         } finally {
             r1.close();

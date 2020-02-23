@@ -12,7 +12,6 @@ class Solution:
             N += 1
             end = end.next
         end.next = newHead
-
         count = 1
         xunhuan = N- k%N
         while count <= xunhuan:

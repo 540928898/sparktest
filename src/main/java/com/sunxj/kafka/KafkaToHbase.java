@@ -23,7 +23,7 @@ public class KafkaToHbase extends KafkaControl {
 //        System.out.println(hb1.isExist("emp"));
 
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", BROKER_LIST);//xxx是服务器集群的ip
+        properties.put("bootstrap.servers", BROKER_LIST);//xxx鏄湇鍔″櫒闆嗙兢鐨刬p
         properties.put("group.id", Group_ID);
         properties.put("enable.auto.commit", "true");
         properties.put("auto.commit.interval.ms", "1000");

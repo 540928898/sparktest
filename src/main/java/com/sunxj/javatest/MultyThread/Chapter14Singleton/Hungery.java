@@ -10,7 +10,7 @@ public class Hungery {
     public static void main(String[] args) {
         Hungery t1 = new Hungery();
         Hungery t2 = new Hungery();
-        System.out.println(t1 == t2);
+        System.out.println(t1.equals(t2));
     }
 
 }

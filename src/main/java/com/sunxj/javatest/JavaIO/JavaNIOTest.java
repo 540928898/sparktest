@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 同步和异步 是对于服务器来说的 也就是或 同步 是应用端需要不断询问 数据是否准备好 异步是由服务器通知
 
  */
+
 public class JavaNIOTest {
     private static String infile = new String("/Users/4paradigm/Desktop/infile.txt");
     private static String outfile = new String(("/Users/4paradigm/Desktop/outfile.txt"));
