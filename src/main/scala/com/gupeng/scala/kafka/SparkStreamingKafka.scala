@@ -5,33 +5,54 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-
+import org.codehaus.jettison.json.JSONObject
+import com.gupeng.scala.RedisUitls.RedisClient
 object SparkStreamingKafka {
-//  val conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount")
-//  val ssc = new StreamingContext(conf, Seconds(1))
-//  val lines = ssc.socketTextStream("localhost", 9999)
-//  val words = lines.flatMap(_.split(" "))
-//  import org.apache.spark.streaming.StreamingContext._ // not necessary since Spark 1.3
-//  val pairs = words.map(word => (word, 1))
-//  val wordCounts = pairs.reduceByKey(_ + _)
-//  wordCounts.print()
-//  ssc.start()
-def main(args: Array[String]): Unit = {
-  val spark = SparkSession.builder().appName("spark_kafka").master("local[1]").getOrCreate()
-  val batchDuration = Seconds(5) //时间单位为秒
-  val streamContext = new StreamingContext(spark.sparkContext, batchDuration)
-  streamContext.checkpoint("/Users/4paradigm/Desktop/checkpoint")
-  var topics = Array("Three").toSet
-  val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
-  val stream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](streamContext, kafkaParams, topics)
-  stream.foreachRDD(rdd => {
-    rdd.foreach(line => {
-      println("key=" + line._1 + "  value=" + line._2)
+  final val tableName = "111"
+//  def addUserClick(tableName:String,userName:String,clickCount:Int):Unit={
+//    RedisTools.setHincrBy(tableName,userName,clickCount)
+//  }
+  def main(args: Array[String]): Unit = {
+    val dbIndex = 1
+    val spark = SparkSession.builder().appName("spark_kafka").master("local[1]").getOrCreate()
+    val batchDuration = Seconds(5) //时间单位为秒
+    val streamContext = new StreamingContext(spark.sparkContext, batchDuration)
+    streamContext.checkpoint("F:\\sparkCheckPoint")
+    var topics = Array("test").toSet
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> "localhost:9092")
+    val stream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](streamContext, kafkaParams, topics)
+    val events = stream.flatMap(line =>{
+      val data = new JSONObject(line._2)
+      Some(data)
     })
-  })
-  streamContext.start()  //spark stream系统启动
-  streamContext.awaitTermination() //
+    val userClick = events.map(x => (x.getString("uid"),x.getInt("click_count"))).reduceByKey(_+_)
+
+
+    userClick.foreachRDD( line =>{
+      line.foreach(pair=>{
+        println("this is each partiotion : "+pair._1+" countClick : "+ pair._2)
+        val jedis = RedisClient.pool.getResource
+        jedis.hincrBy(tableName, pair._1, pair._2)
+        RedisClient.pool.returnResource(jedis)
+      })
+
+//      userClick.foreachRDD( line =>{
+//      line.foreachPartition(partionOfEachRecord =>{
+//        partionOfEachRecord.foreach(pair =>{
+//          println("this is each partiotion : "+pair._1+" countClick : "+ pair._2)
+//          val uid = pair._1
+//          val clickCount = pair._2
+//          val jedis = RedisClient.pool.getResource
+////          jedis.select(dbIndex)
+//          jedis.hincrBy(tableName, uid, clickCount)
+//          RedisClient.pool.returnResource(jedis)
+//        })
+//      })
+    })
+
+    streamContext.start()  //spark stream系统启动
+    streamContext.awaitTermination() //
+  }
 
 }
 
-}
