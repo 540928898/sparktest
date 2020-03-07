@@ -1,4 +1,8 @@
 package com.sunxj.javatest.MultyThread.Chapter14Singleton;
 
-public class ENUM {
+public enum  ENUM {
+    INSTANCE;
+    public void test(){
+        System.out.println(1);
+    }
 }

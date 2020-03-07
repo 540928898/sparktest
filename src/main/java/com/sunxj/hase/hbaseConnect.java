@@ -229,21 +229,22 @@ public class hbaseConnect {
 //            }
 //        }
 //    }
+
     public static void main(String[] args) throws IOException {
 //        System.out.println(isExist("emp"));
         hbaseConnect hb1 = new hbaseConnect();
         hb1.setMyconnection();
         System.out.println(hb1.isExist("emp"));
-//        hb1.createTable("emp",new String[] {"for","test"});
+        hb1.createTable("emp",new String[] {"for","test"});
         hb1.addRow("emp","1","for","name1","gugu");
         hb1.addRow("emp","2","for","name1","gugu");
         hb1.addRow("emp","3","test","name1","gugu");
         hb1.addRow("emp","4","for","name1","gugu");
         hb1.scanAll("emp","for","name1","1","4");
         hb1.readRow("emp","1");
-//        hb1.delAll("emp",new String[] {"gupeng","gupeng1","gupeng3"});
+        hb1.delAll("emp",new String[] {"gupeng","gupeng1","gupeng3"});
         hb1.scanAll("emp","for","","gupeng","gupeng4");
-//        hb1.deleteTable("emp");
+        hb1.deleteTable("emp");
         hb1.admin.close();
     }
 }

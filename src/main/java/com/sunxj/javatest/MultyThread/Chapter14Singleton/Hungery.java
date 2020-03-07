@@ -2,15 +2,10 @@ package com.sunxj.javatest.MultyThread.Chapter14Singleton;
 
 public class Hungery {
     private static Hungery hungerySingleton = new Hungery();
+    //构造函数私有化 防止被实例化
     private Hungery(){}
-    public Hungery getHungerySingleton() {
+    public static Hungery getHungerySingleton() {
         return hungerySingleton;
-    }
-
-    public static void main(String[] args) {
-        Hungery t1 = new Hungery();
-        Hungery t2 = new Hungery();
-        System.out.println(t1.equals(t2));
     }
 
 }
