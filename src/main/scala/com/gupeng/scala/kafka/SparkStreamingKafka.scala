@@ -26,8 +26,6 @@ object SparkStreamingKafka {
       Some(data)
     })
     val userClick = events.map(x => (x.getString("uid"),x.getInt("click_count"))).reduceByKey(_+_)
-
-
     userClick.foreachRDD( line =>{
       line.foreach(pair=>{
         println("this is each partiotion : "+pair._1+" countClick : "+ pair._2)
@@ -35,19 +33,6 @@ object SparkStreamingKafka {
         jedis.hincrBy(tableName, pair._1, pair._2)
         RedisClient.pool.returnResource(jedis)
       })
-
-//      userClick.foreachRDD( line =>{
-//      line.foreachPartition(partionOfEachRecord =>{
-//        partionOfEachRecord.foreach(pair =>{
-//          println("this is each partiotion : "+pair._1+" countClick : "+ pair._2)
-//          val uid = pair._1
-//          val clickCount = pair._2
-//          val jedis = RedisClient.pool.getResource
-////          jedis.select(dbIndex)
-//          jedis.hincrBy(tableName, uid, clickCount)
-//          RedisClient.pool.returnResource(jedis)
-//        })
-//      })
     })
 
     streamContext.start()  //spark stream系统启动
