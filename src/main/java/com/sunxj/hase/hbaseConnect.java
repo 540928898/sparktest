@@ -169,7 +169,6 @@ public class hbaseConnect {
         catch (IOException e){
             e.printStackTrace();
         };
-
     }
     public void delAll(String tableName,String... rowKeys) throws IOException {
         try {
@@ -189,61 +188,21 @@ public class hbaseConnect {
             e.printStackTrace();
         }
     }
-//    public  void addAll(String tableName,String... rowKeys){
-//        try{
-//            if(!isExist(tableName)){
-//                System.out.println("Table "+tableName +" is not exists");
-//            }
-//            else {
-//
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    static class MTH_Mapper extends Mapper<LongWritable, Text, IntWritable, Text> {
-//        IntWritable k = new IntWritable();
-//        Text v = new Text();
-//        @Override
-//        protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, IntWritable, Text>.Context context) throws IOException, InterruptedException, IOException {
-//            String[] split = value.toString().split(",");
-//            if (split.length == 5) {
-//                k.set(Integer.parseInt(split[0]));
-//                v.set(split[1] + "\t" + split[2] + "\t" + split[3] + "\t" + split[4] + "\t");
-//                context.write(k, v);
-//            }
-//        }
-//    }
-//
-//    static class MTH_Reduce extends TableReducer<IntWritable, Text, NullWritable> {
-//        @Override
-//        protected void reduce(IntWritable key, Iterable<Text> values, Reducer<IntWritable, Text, NullWritable, Mutation>.Context context) throws IOException, InterruptedException {
-//            for (Text v : values) {
-//                String[] datas = v.toString().split("\t");
-//                Put p = new Put((key.get() + "").getBytes());
-//                p.addColumn("base_info".getBytes(), "name".getBytes(), datas[0].getBytes());
-//                p.addColumn("base_info".getBytes(), "sex".getBytes(), datas[1].getBytes());
-//                p.addColumn("base_info".getBytes(), "age".getBytes(), datas[2].getBytes());
-//                p.addColumn("job_info".getBytes(), "dept".getBytes(), datas[3].getBytes());
-//                context.write(NullWritable.get(), p);
-//            }
-//        }
-//    }
+
     public static void main(String[] args) throws IOException {
-//        System.out.println(isExist("emp"));
         hbaseConnect hb1 = new hbaseConnect();
         hb1.setMyconnection();
         System.out.println(hb1.isExist("emp"));
-//        hb1.createTable("emp",new String[] {"for","test"});
-        hb1.addRow("emp","1","for","name1","gugu");
-        hb1.addRow("emp","2","for","name1","gugu");
-        hb1.addRow("emp","3","test","name1","gugu");
-        hb1.addRow("emp","4","for","name1","gugu");
-        hb1.scanAll("emp","for","name1","1","4");
-        hb1.readRow("emp","1");
+        hb1.createTable("emp",new String[] {"for","test"});
+//        hb1.addRow("emp","1","for","name1","gugu");
+//        hb1.addRow("emp","2","for","name1","gugu");
+//        hb1.addRow("emp","3","test","name1","gugu");
+//        hb1.addRow("emp","4","for","name1","gugu");
+//        hb1.scanAll("emp","for","name1","1","4");
+//        hb1.readRow("emp","1");
 //        hb1.delAll("emp",new String[] {"gupeng","gupeng1","gupeng3"});
-        hb1.scanAll("emp","for","","gupeng","gupeng4");
+//        hb1.scanAll("emp","for","","gupeng","gupeng4");
 //        hb1.deleteTable("emp");
-        hb1.admin.close();
+//        hb1.admin.close();
     }
 }

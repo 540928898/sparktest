@@ -19,9 +19,6 @@ public class KafkaToHbase extends KafkaControl {
         hb1.setMyconnection();
     }
     public static void runConsumer()  {
-//        hb1.setMyconnection();
-//        System.out.println(hb1.isExist("emp"));
-
         Properties properties = new Properties();
         properties.put("bootstrap.servers", BROKER_LIST);//xxx是服务器集群的ip
         properties.put("group.id", Group_ID);
@@ -32,7 +29,6 @@ public class KafkaToHbase extends KafkaControl {
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-//        TopicPartition p = new TopicPartition(TOPIC,0);
         List<PartitionInfo> partitionInfoList = kafkaConsumer.partitionsFor(TOPIC);
         if(null != partitionInfoList) {
             for(PartitionInfo partitionInfo : partitionInfoList) {

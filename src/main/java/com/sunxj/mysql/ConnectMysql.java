@@ -7,7 +7,7 @@ public class ConnectMysql {
     //所有的配置文件可以放到一起，像在维信金科的一样
     static final String name = "root";
     static final String password = "13815690318";
-    static String jdbcPath = "jdbc:mysql://localhost:3306/gupeng";
+    static String jdbcPath = "jdbc:mysql://localhost:3306/gupengtest";
 
     public ConnectMysql(String jdbcPath1) throws SQLException {
         this.jdbcPath = jdbcPath1;
@@ -45,7 +45,6 @@ public class ConnectMysql {
             e.printStackTrace();
         }
         return false;
-
     }
     void layoutStyle2(ResultSet rs) {
         System.out.println("-----------------");
@@ -69,7 +68,7 @@ public class ConnectMysql {
         }
     }
     public static void main(String[] args) throws SQLException {
-        ConnectMysql conn1 = new ConnectMysql("jdbc:mysql://localhost:3306/gupeng");
+        ConnectMysql conn1 = new ConnectMysql("jdbc:mysql://localhost:3306/gupengtest");
         ResultSet t1 = conn1.selectSQL("select * from user");
         conn1.layoutStyle2(t1);
 //        t1.getString("name");

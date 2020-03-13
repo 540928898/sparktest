@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 public class KafkaControl extends ConnectKafka{
+    public KafkaControl(){
+        super();
+    }
     public static void runConsumer() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", BROKER_LIST);//xxx是服务器集群的ip
@@ -24,9 +27,7 @@ public class KafkaControl extends ConnectKafka{
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
-//        TopicPartition p = new TopicPartition(TOPIC,0);
         List<PartitionInfo> partitionInfoList = kafkaConsumer.partitionsFor(TOPIC);
-//        kafkaConsumer.assign(Arrays.asList(p));
         if(null != partitionInfoList) {
             for(PartitionInfo partitionInfo : partitionInfoList) {
                 kafkaConsumer.assign(Collections.singletonList(
@@ -39,7 +40,6 @@ public class KafkaControl extends ConnectKafka{
             for (ConsumerRecord<String, String> record : records) {
                 System.out.println("-----------------");
                 System.out.printf("offset = %d, value = %s,patition = %s", record.offset(), record.value(),record.partition());
-//                System.out.println("Consume Success");
             }
         }
     }
@@ -63,12 +63,12 @@ public class KafkaControl extends ConnectKafka{
             }
             i += 1;
             producer.send(new ProducerRecord<String, String>(TOPIC, "" + i, "asd"));
-            System.out.println("produce success");
+            System.out.println("produce success:"+TOPIC+"" + i+ ":asd");
         }
     }
     public static void main(String[] args) throws InterruptedException, IOException {
        Thread t1 = new Thread(KafkaControl::runProducer) ;
        t1.start();
-       new Thread(KafkaControl::runConsumer).start();
+//       new Thread(KafkaControl::runConsumer).start();
     }
 }

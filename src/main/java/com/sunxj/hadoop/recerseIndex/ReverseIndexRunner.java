@@ -31,8 +31,8 @@ public class ReverseIndexRunner {
         job.setOutputValueClass(Text.class);
 //        FileInputFormat.addInputPath(job,in);
 //        FileOutputFormat.setOutputPath(job,out);
-        FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:8020/user/hadoop/mapreduce/input/*/"));
-        FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:8020/user/hadoop/mapreduce/output/"));
+        FileInputFormat.setInputPaths(job, new Path("hdfs://localhost:9000/user/hadoop/mapreduce/input/*/"));
+        FileOutputFormat.setOutputPath(job, new Path("hdfs://localhost:9000/user/hadoop/mapreduce/output/"));
         System.exit(job.waitForCompletion(true)?0:1);
     }
 }

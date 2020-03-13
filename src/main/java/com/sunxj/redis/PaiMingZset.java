@@ -1,22 +1,22 @@
 package com.sunxj.redis;
 
+import redis.clients.jedis.Jedis;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class PaiMingZset extends RedisTool{
-    public PaiMingZset() {
-        super();
-    }
+import static com.sunxj.redis.JedisPool.jedisPool;
+
+public class PaiMingZset {
     public static void main(String[] args) {
         String key = "mostUsedLanguages";
         PaiMingZset pz1 = new PaiMingZset();
-        pz1.setJedis();
+        Jedis jedis = JedisPool.getJedis();
         HashMap<String, Double> t1 = new HashMap<String,Double>();
         t1.put("zhoujielun",20.0);
         t1.put("zhangjie",30.0);
-        pz1.jedis.zadd(key,t1);
-        pz1.jedis.zadd(key,100,"Java");
-        System.out.println("Number of Java users:" + pz1.jedis.zscore(key, "Java"));
+        jedis.zadd(key,100,"Java");
+        System.out.println("Number of Java users:" + jedis.zscore(key, "Java"));
         System.out.println("Number of elements:" + jedis.zcard(key));
     }
 }

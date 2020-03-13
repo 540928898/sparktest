@@ -49,7 +49,6 @@ public class DistributedLockTest {
         }
         return  a1;
     }
-
     public static void main(String[] args) {
         DistributedLockTest d1 = new DistributedLockTest();
         ArrayList<Thread> list1 = (ArrayList<Thread>) d1.createThread();

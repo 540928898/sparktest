@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 public class testHadoop {
     FileSystem fileSystem;
-    String hdfsUri = "hdfs://localhost:8020";
+    String hdfsUri = "hdfs://localhost:9000";
 //    Configured
     public  void   getFileSystem() throws IOException, URISyntaxException, InterruptedException{
         Configuration configuration = new Configuration();
@@ -127,17 +127,17 @@ public class testHadoop {
             System.out.println("We got unexpected: " + e.getMessage());
         }
     }
+    public void loadAllFile(String loadPath,String targetPath){
+
+    }
     public static void main(String[] args) throws InterruptedException, IOException, URISyntaxException {
         testHadoop test1 = new testHadoop();
         test1.getFileSystem();
-//        test1.readFile("/user/hadoop/mapreduce/input/","gu0301.txt",0);
-//        test1.readFile("/user/hadoop/mapreduce/input/","wordcount.txt",0);
-        for (int i = 0; i < 4 ; i++) {
-            test1.readFile("/user/hadoop/mapreduce/output/","part-r-0000"+i,0);
-        }
-//        test1.listDir("/user/hadoop/mapreduce/input/");
-//        test1.loadFile("/Users/4paradigm/Desktop/gu0301.txt","/user/hadoop/mapreduce/input/");
-//        test1.loadFile("/Users/4paradigm/Desktop/newword.txt","/user/hadoop/mapreduce/input/");
+        test1.createFile("/","gupeng.txt");
+        test1.listDir("/");
+        test1.createDir("/CreditPro/tescher/");
+        test1.createDir("/CreditPro/SparkCheckPoint/");
+//        test1.loadFile("F:\\AiLearning-master\\data\\15.BigData_MapReduce\\inputFile.txt","/CreditPro/tescher/");
 
     }
 }

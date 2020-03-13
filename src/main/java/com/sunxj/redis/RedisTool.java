@@ -8,25 +8,12 @@ import java.util.*;
 
 
 public class RedisTool {
-    public static Jedis jedis ;
-    public  void setJedis(){
-        try {
-            jedis = new Jedis("127.0.0.1");
-            String ping = jedis.ping();
-            System.out.println(ping);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-   public  void close(){
-        jedis.close();
-   }
+//    static JedisPool jedis = new JedisPool();
+    static Jedis jedis = JedisPool.getJedis();
    public static void setKeys(String key,String value){
            jedis.set(key, value);
            System.out.println(jedis.get(key));
    }
-
     public void setHash(String hashName,HashMap<String, String> hashMap) {
         jedis.hmset(hashName, hashMap);
         Map new1 = jedis.hgetAll(hashName);
@@ -35,26 +22,18 @@ public class RedisTool {
              ) {
             System.out.println(entry.toString());
         }
-//        for (Map.Entry  entry:hashMap.entrySet()
-
-//             ) {
-//            jedis.hset(entry.getKey(),entry.getValue())
-//        }
-
     }
 //    @Deprecated
-    public void setList(String listName,ArrayList<String> arrayList) {
+    public static void setList(String listName,ArrayList<String> arrayList) {
         for (String element:arrayList
              ) {
-            System.out.println(element);
             jedis.rpush(listName, element);
         }
-//        jedis.lpush(listName)
-        ArrayList<String> a1 = (ArrayList<String>) jedis.lrange(listName, 0, arrayList.size()-1);//List不是一个接口吗
-        for (String ele:a1
-             ) {
-            System.out.println(ele);
-        }
+//        ArrayList<String> a1 = (ArrayList<String>) jedis.lrange(listName, 0, arrayList.size()-1);//List不是一个接口吗
+//        for (String ele:a1
+//             ) {
+//            System.out.println(ele);
+//        }
     }
 
     public void setSet(String setName, Set<String> set) {
@@ -71,12 +50,13 @@ public class RedisTool {
     }
     public void getAllKeys() {
         System.out.println("获取所有keys");
-        Set<String> set2 = jedis.keys("*");
+        Set<String> set2 = jedis.keys("*"); // 阻塞！！！
         for (String ele:set2
         ) {
             System.out.println(ele);
         }
     }
+
     void zsortGet(String zsName,int topn){
         Set<String> t1 = jedis.zrevrange(zsName,0,4);
         for (String name:t1
@@ -92,9 +72,8 @@ public class RedisTool {
     public static void main(String[] args) {
 
         RedisTool r1 = new RedisTool();
-        try {
-            r1.setJedis();
-            r1.zsortGet("topPopularFilms",5);
+
+        r1.zsortGet("topPopularFilms",5);
 
 //            ArrayList<String> se = new ArrayList<String>();
 //            HashSet<String> set1 = new HashSet<String>();
@@ -119,8 +98,6 @@ public class RedisTool {
 //            jedis.set("gupengLock", "locklock","NX","PX",15);
 //            jedis.hset("gupenghset", "gugu", "1");
 
-        } finally {
-            r1.close();
-        }
+
     }
 }
