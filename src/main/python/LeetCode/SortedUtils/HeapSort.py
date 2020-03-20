@@ -1,6 +1,4 @@
 import math
-
-
 class HeapClass:
     def maxHeapOne(self,list2,index1):
         if index1*2+2 <= len(list2)-1:
