@@ -22,7 +22,6 @@ def TwoQueOneStack(listRaw):
         print(list1.pop())
         list1,list2 = list2,list1
 TwoStackOneQuere([1,2,3,4,5,6])
-
 TwoQueOneStack([1,2,3,4,5,6])
 
 

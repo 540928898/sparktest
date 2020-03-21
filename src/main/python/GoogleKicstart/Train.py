@@ -14,7 +14,6 @@ def findOne(s2,s3):
     res = 0
     for i,j in enumerate(s3):
         if i <s2[1]:
-
             if cur < j:
                 res = res + (j-cur)*i
                 cur = j
