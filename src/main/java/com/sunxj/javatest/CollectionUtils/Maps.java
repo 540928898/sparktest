@@ -1,6 +1,7 @@
 package com.sunxj.javatest.CollectionUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Maps {
     /**

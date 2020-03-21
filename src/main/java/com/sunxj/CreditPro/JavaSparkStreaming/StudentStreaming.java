@@ -2,7 +2,8 @@ package com.sunxj.CreditPro.JavaSparkStreaming;
 import java.util.*;
 
 
-
+import com.sunxj.CreditPro.HandlerEach.HandlerInt;
+import jdk.internal.org.objectweb.asm.Handle;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,6 +15,7 @@ import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.api.java.function.VoidFunction;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.streaming.Durations;
+import org.apache.spark.streaming.Seconds;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
@@ -21,8 +23,8 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
-
 import scala.Tuple2;
+import sun.net.www.protocol.http.Handler;
 
 public class StudentStreaming {
     public static <U> void main(String[] args) throws InterruptedException {
@@ -46,12 +48,6 @@ public class StudentStreaming {
         kafkaParams.put("group.id", "sparkStreaming");
         String[] TopicSet = new String[]{"test","StudentGetJob"};
         Collection<String> topics = Arrays.asList(TopicSet);//配置topic，可以是数组
-//        Map<TopicPartition, Long> topicsAndOffset = new HashMap<>();//  配置对应的主题分区的offset，从指定offset消费
-//        topicsAndOffset.put(new TopicPartition("test", 0), 0L);
-//        topicsAndOffset.put(new TopicPartition("test", 1), 10L);
-//        topicsAndOffset.put(new TopicPartition("test", 2), 330L);
-
-
 //声明 streaming-kafka-Direct 方式拉取数据  分区一一对应
         JavaInputDStream<ConsumerRecord<String, String>> javaInputDStream =KafkaUtils.createDirectStream(
                 streamingContext,
@@ -60,37 +56,50 @@ public class StudentStreaming {
 //                ConsumerStrategies.Subscribe( topics,kafkaParams,topicsAndOffset) //消费者策略   方式二 从每个分区的 指定的offset 开始消费
         );
 
-        // 将kafka中的数据拉去出来之后进行 解析获取key和value值（使用print打印）
-        JavaPairDStream<String, String> javaPairDStream = javaInputDStream.mapToPair(new PairFunction<ConsumerRecord<String, String>, String, String>(){
-            private static final long serialVersionUID = 1L;
+//
+        javaInputDStream.foreachRDD(new VoidFunction<JavaRDD<ConsumerRecord<String, String>>>() {
             @Override
-            //获取数据中的 key和value  (ConsumerRecord 保存了完整的kafka中信息  包括分区 偏移量 等)
-            public Tuple2<String, String> call(ConsumerRecord<String, String> consumerRecord) throws Exception {
-                System.out.println("--------------- ConsumerRecord ------------------------ ");
-                System.out.println("partition:   "+consumerRecord.partition());
-                System.out.println("offset:   "+consumerRecord.offset());
-                System.out.println("toString:   "+consumerRecord.toString());
-                Thread.sleep(100);//时间间隔 长只是为了便于查看日志，观察是不是从指定的偏移量开始消费的
-                return new Tuple2<>(consumerRecord.key(), consumerRecord.value());
-            }
-        });
-        javaPairDStream.foreachRDD(new VoidFunction<JavaPairRDD<String,String>>() {
-            @Override
-            public void call(JavaPairRDD<String, String> javaPairRDD) throws Exception {
-                // TODO Auto-generated method stub
-                javaPairRDD.foreach(new VoidFunction<Tuple2<String,String>>() {
+            public void call(JavaRDD<ConsumerRecord<String, String>> consumerRecordJavaRDD) throws Exception {
+                consumerRecordJavaRDD.foreach(new VoidFunction<ConsumerRecord<String, String>>() {
                     @Override
-                    public void call(Tuple2<String, String> tuple2)
-                            throws Exception {
-                        // TODO Auto-generated method stub
-                        System.out.println(tuple2._2);
+                    public void call(ConsumerRecord<String, String> consumerRecord) throws Exception {
+                        HandlerInt curHandle = HandleGet.getHandler(consumerRecord);
+                        curHandle.DoHandle(consumerRecord);
                     }
                 });
             }
         });
+//        JavaPairDStream<String, String> javaPairDStream = javaInputDStream.mapToPair(new PairFunction<ConsumerRecord<String, String>, String, String>(){
+//            private static final long serialVersionUID = 1L;
+//            @Override
+//            //获取数据中的 key和value  (ConsumerRecord 保存了完整的kafka中信息  包括分区 偏移量 等)
+//            public Tuple2<String, String> call(ConsumerRecord<String, String> consumerRecord) throws Exception {
+//                HandlerInt curHandle = HandleGet.getHandler(consumerRecord);
+//                curHandle.DoHandle();
+////                System.out.println("--------------- ConsumerRecord ------------------------ ");
+////                System.out.println("topic:   "+consumerRecord.topic());
+////                System.out.println("partition:   "+consumerRecord.partition());
+////                System.out.println("offset:   "+consumerRecord.offset());
+////                System.out.println("toString:   "+consumerRecord.toString());
+////                Thread.sleep(150);//时间间隔 长只是为了便于查看日志，观察是不是从指定的偏移量开始消费的
+//                return new Tuple2<>(consumerRecord.key(), consumerRecord.value());
+//            }
+//        });
+//        javaPairDStream.foreachRDD(new VoidFunction<JavaPairRDD<String,String>>() {
+//            @Override
+//            public void call(JavaPairRDD<String, String> javaPairRDD) throws Exception {
+//                // TODO Auto-generated method stub
+//                javaPairRDD.foreach(new VoidFunction<Tuple2<String,String>>() {
+//                    @Override
+//                    public void call(Tuple2<String, String> tuple2)
+//                            throws Exception {
+//                        // TODO Auto-generated method stub
+//                        System.out.println(tuple2._2);
+//                    }
+//                });
+//            }
+//        });
         streamingContext.start();
         streamingContext.awaitTermination();
-
-
     }
 }

@@ -14,9 +14,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 public class StrudentProducer {
-    public final static String Group_ID = "test-consumer-group";
-    public final static String TOPIC = "StudentGetJob";
-//    public final static String TOPIC = "test";
+    public  static String TOPIC = "StudentGetJob";
     public final static int BUFFER_SIZE = 64 * 1024;
     public final static int TIMEOUT = 20000;
     public final static int INTERVAL = 10000;
@@ -38,7 +36,7 @@ public class StrudentProducer {
     public static void runProducer() {
         Properties kafkaProps = new Properties();
         kafkaProps.put("bootstrap.servers", BROKER_LIST);
-        kafkaProps.put("acks","-1");
+        kafkaProps.put("acks","1");
         kafkaProps.put("batch.size",1048576);
         kafkaProps.put("key.serializer",
                 "org.apache.kafka.common.serialization.StringSerializer");
@@ -49,7 +47,7 @@ public class StrudentProducer {
         int i = 0;
         while (true) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
