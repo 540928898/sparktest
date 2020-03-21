@@ -1,3 +1,7 @@
 .idea/
 .class/
 /out/
+/target/
+.iml/
+/src/resource/
+
