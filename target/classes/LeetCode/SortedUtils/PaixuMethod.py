@@ -6,7 +6,7 @@ def maoPaoSort(list1):
             list1[i],list1[j] = min(list1[i],list1[j]),max(list1[i],list1[j])
     return list1
 
-# ¹é²¢ÅÅĞò
+
 def mergeTwoArray(list1,list2):
     res = []
     N1 = len(list1)
@@ -21,6 +21,7 @@ def mergeTwoArray(list1,list2):
         if flag2 >= N2:
             res += list1[flag1:]
             break
+
         if list1[flag1] < list2[flag2]:
             res.append(list1[flag1])
             flag1 += 1
@@ -29,7 +30,10 @@ def mergeTwoArray(list1,list2):
             res.append(list2[flag2])
             flag2+=1
     return res
+
+
 def guibing(list1):
+    # print(list1)
     N = len(list1)
     if N <= 1:
         return list1
